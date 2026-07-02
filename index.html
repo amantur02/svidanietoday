@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Одно важное приглашение 🐱</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #ffe0f0 0%, #fff5e6 50%, #e0f0ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .screen { display: none; animation: fadeSlideIn 0.6s ease; }
+        .screen.active { display: block; }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes wiggle {
+            0%,100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.08); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        h1 { font-size: 2em; color: #4a3f6b; margin-bottom: 15px; line-height: 1.3; }
+        h2 { font-size: 1.5em; color: #5e548e; margin-bottom: 25px; font-weight: 500; }
+        p { color: #6b5b7b; font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; }
+
+        .emoji-big { font-size: 80px; display: block; animation: float 3s ease-in-out infinite; margin-bottom: 20px; }
+        .emoji-medium { font-size: 50px; }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .btn-yes {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #4a2c2c;
+            box-shadow: 0 8px 25px rgba(255,154,158,0.4);
+        }
+        .btn-yes:hover { transform: translateY(-3px) scale(1.03); }
+        .btn-yes:active { transform: scale(0.96); }
+
+        .btn-no {
+            background: #f0e6ef;
+            color: #8b7b9b;
+            transition: all 0.08s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            user-select: none;
+        }
+        .btn-no.running { position: fixed; z-index: 9999; pointer-events: none; animation: wiggle 0.3s ease infinite; }
+
+        .btn-next {
+            background: #d4c5e2;
+            color: #3d2c5e;
+            padding: 14px 30px;
+            font-size: 1.1em;
+        }
+        .btn-next:hover { background: #c3b0d6; transform: translateY(-2px); }
+        .btn-next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .quiz-option {
+            background: white;
+            border: 2px solid #e8dff0;
+            border-radius: 20px;
+            padding: 15px 22px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1em;
+            color: #4a3f6b;
+            font-weight: 500;
+            flex: 1 1 150px;
+            max-width: 220px;
+            font-family: inherit;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+        .quiz-option:hover { border-color: #c3b0d6; background: #fdfaff; transform: translateY(-2px); }
+        .quiz-option.selected { border-color: #ff9a9e; background: #fff0f0; box-shadow: 0 0 0 4px rgba(255,154,158,0.2); font-weight: 600; }
+
+        input[type="date"], input[type="time"] {
+            padding: 14px 20px;
+            border-radius: 20px;
+            border: 2px solid #e8dff0;
+            font-size: 1.1em;
+            margin: 10px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #4a3f6b;
+        }
+        input[type="date"]:focus, input[type="time"]:focus {
+            outline: none;
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 4px rgba(255,154,158,0.15);
+        }
+
+        .firework { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+
+        @keyframes sparkleFloat {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(0.3); }
+        }
+
+        .progress-bar { background: #e8dff0; border-radius: 20px; height: 10px; width: 100%; margin: 20px 0; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #ff9a9e, #fad0c4); height: 100%; border-radius: 20px; transition: width 0.5s ease; }
+
+        @media (max-width: 500px) {
+            .container { padding: 25px 18px; border-radius: 24px; }
+            h1 { font-size: 1.5em; }
+            .btn { padding: 14px 25px; font-size: 1em; }
+            .emoji-big { font-size: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="appContainer">
+
+        <!-- ЭКРАН 1: ПРИГЛАШЕНИЕ -->
+        <div class="screen active" id="screen-invite">
+            <span class="emoji-big">🐱💌</span>
+            <h1>Привет!</h1>
+            <p>Я тут подумал... Мы оба знаем, что мир — странное место.<br>Но, может, сделаем его чуточку уютнее вместе?</p>
+            <p style="font-size: 1.4em; font-weight: 600; color: #5e548e;">Пойдём куда-нибудь? ✨</p>
+            <div style="margin-top: 25px; position: relative;">
+                <button class="btn btn-yes" onclick="goToQuiz()">🥰 С удовольствием!</button>
+                <button class="btn btn-no" id="btnRunaway" onmouseenter="runAway(this)" ontouchstart="runAway(this)">🙈 В другой раз...</button>
+            </div>
+            <p id="runawayHint" style="font-size: 0.85em; color: #b5a3c9; margin-top: 15px; min-height: 20px;"></p>
+        </div>
+
+        <!-- ЭКРАН 2: КУДА ПОЙТИ -->
+        <div class="screen" id="screen-quiz-where">
+            <span class="emoji-medium">🗺️</span>
+            <h2>Куда отправимся?</h2>
+            <p>Выбери, что тебе ближе по душе:</p>
+            <div class="quiz-options" id="quizWhereOptions">
+                <button class="quiz-option" onclick="selectOption(this, 'quizWhereOptions')">🌳 Прогуляться по парку</button>
+                <button class="quiz-option" onclick="selectOption(this, 'quizWhereOptions')">🏙️ Прогуляться по городу</button>
+                <button class="quiz-option" onclick="selectOption(this, 'quizWhereOptions')">🍝 Сходить в ресторан</button>
+            </div>
+            <button class="btn btn-next" id="btnNextWhere" onclick="goToQuizCuisine()" disabled>Дальше 👉</button>
+        </div>
+
+        <!-- ЭКРАН 3: КУХНЯ -->
+        <div class="screen" id="screen-quiz-cuisine">
+            <span class="emoji-medium">🍽️</span>
+            <h2>Какую кухню предпочитаешь?</h2>
+            <p>Можно выбрать всё, что нравится:</p>
+            <div class="quiz-options" id="quizCuisineOptions">
+                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🍕 Итальянская</button>
+                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🍣 Японская</button>
+                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🥟 Русская / Домашняя</button>
+                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🌮 Мексиканская</button>
+                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🥗 Всё равно, главное компания 😊</button>
+            </div>
+            <button class="btn btn-next" id="btnNextCuisine" onclick="goToCalendar()" disabled>Дальше 👉</button>
+        </div>
+
+        <!-- ЭКРАН 4: КАЛЕНДАРЬ (ФОРМА ОТПРАВКИ) -->
+        <div class="screen" id="screen-calendar">
+            <span class="emoji-medium">📅</span>
+            <h2>Когда ты свободна?</h2>
+            <p>Выбери день и удобное время ✨</p>
+            <form id="finalForm" action="https://formspree.io/f/ТВОЙ_ID_ЗДЕСЬ" method="POST">
+                <!-- Скрытые поля для предыдущих ответов -->
+                <input type="hidden" name="_subject" value="Новый ответ с приглашения! 💌">
+                <input type="hidden" name="where" id="hiddenWhere">
+                <input type="hidden" name="cuisine" id="hiddenCuisine">
+                <div style="margin: 15px 0;">
+                    <input type="date" name="date" id="datePicker" min="" required onchange="checkCalendar()">
+                </div>
+                <div>
+                    <input type="time" name="time" id="timePicker" value="18:00" required onchange="checkCalendar()">
+                </div>
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-yes" id="btnConfirmDate" disabled>
+                        Подтвердить и отправить 💫
+                    </button>
+                </div>
+                <div class="progress-bar" style="margin-top: 25px;">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <p style="font-size: 0.85em; color: #b5a3c9;" id="progressText">Осталось совсем чуть-чуть...</p>
+            </form>
+        </div>
+
+        <!-- ЭКРАН 5: ФИНАЛ С САЛЮТОМ -->
+        <div class="screen" id="screen-final">
+            <span class="emoji-big" style="animation: bounceIn 0.8s ease;">🎉</span>
+            <h1>Ура! Свершилось!</h1>
+            <p style="font-size: 1.2em;">Я безумно рад, что ты согласилась! 🥳<br>Обещаю — будет весело, вкусно и душевно.</p>
+            <p>Я свяжусь с тобой совсем скоро, чтобы уточнить детали.<br>А пока... лови салют! ✨💖🐱</p>
+            <button class="btn btn-yes" onclick="launchFireworks()" style="margin-top: 10px;">Запустить салют ещё раз 🎆</button>
+            <canvas id="fireworkCanvas" class="firework" style="display: none;"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== УБЕГАЮЩАЯ КНОПКА =====
+        let runawayClicks = 0;
+        const runawayHints = [
+            "Эй, ты куда? Кнопка здесь! 😼", "Почти поймал... почти... 🙀",
+            "Не-а, этот вариант не работает! 🐾", "Котик не одобряет отказы 😾",
+            "Сдавайся, это судьба! 💘", "Даже админка не спасёт тебя от меня 😹",
+            "Тыкни уже на розовую кнопку! 🎀", "Упс, опять убежала... 🏃‍♀️💨",
+            "Кнопка-ниндзя! 🥷🐱", "Ты очень настойчива... мне это нравится 😏",
+        ];
+
+        function runAway(btn) {
+            runawayClicks++;
+            const hintEl = document.getElementById('runawayHint');
+            hintEl.textContent = runawayHints[Math.min(runawayClicks - 1, runawayHints.length - 1)];
+
+            const btnRect = btn.getBoundingClientRect();
+            const maxX = window.innerWidth - btnRect.width - 20;
+            const maxY = window.innerHeight - btnRect.height - 20;
+            const minX = 20, minY = 20;
+            let newX, newY, attempts = 0;
+            do {
+                newX = Math.random() * (maxX - minX) + minX;
+                newY = Math.random() * (maxY - minY) + minY;
+                attempts++;
+                if (attempts > 50) break;
+            } while (Math.abs(newX - btnRect.left) < 150 && Math.abs(newY - btnRect.top) < 150);
+
+            btn.classList.add('running');
+            btn.style.position = 'fixed';
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            btn.style.zIndex = '9999';
+            setTimeout(() => btn.classList.remove('running'), 600);
+
+            if (runawayClicks >= 8) {
+                hintEl.textContent = 'Ладно, ладно... розовая кнопка тебя ждёт 😸💖';
+                setTimeout(() => {
+                    btn.style.position = 'static';
+                    btn.style.left = 'auto'; btn.style.top = 'auto'; btn.style.zIndex = 'auto';
+                    btn.textContent = '😿 Ладно, уговорила...';
+                    btn.onmouseenter = null;
+                    btn.ontouchstart = null;
+                    btn.onclick = () => goToQuiz();
+                }, 2000);
+            }
+        }
+
+        // ===== НАВИГАЦИЯ =====
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const screen = document.getElementById(screenId);
+            screen.classList.add('active');
+            screen.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function goToQuiz() {
+            document.getElementById('btnRunaway').style.display = 'none';
+            showScreen('screen-quiz-where');
+        }
+
+        let selectedWhere = null;
+        let selectedCuisines = new Set();
+
+        function selectOption(btn, parentId) {
+            const parent = document.getElementById(parentId);
+            if (parentId === 'quizWhereOptions') {
+                parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedWhere = btn.textContent.trim();
+                document.getElementById('btnNextWhere').disabled = false;
+            } else if (parentId === 'quizCuisineOptions') {
+                btn.classList.toggle('selected');
+                if (btn.classList.contains('selected')) {
+                    selectedCuisines.add(btn.textContent.trim());
+                } else {
+                    selectedCuisines.delete(btn.textContent.trim());
+                }
+                document.getElementById('btnNextCuisine').disabled = selectedCuisines.size === 0;
+            }
+        }
+
+        function goToQuizCuisine() {
+            if (!selectedWhere) return;
+            showScreen('screen-quiz-cuisine');
+        }
+
+        function goToCalendar() {
+            if (selectedCuisines.size === 0) return;
+            // Заполняем скрытые поля
+            document.getElementById('hiddenWhere').value = selectedWhere;
+            document.getElementById('hiddenCuisine').value = Array.from(selectedCuisines).join(', ');
+            showScreen('screen-calendar');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('datePicker').min = tomorrow.toISOString().split('T')[0];
+            updateProgress(60);
+        }
+
+        function checkCalendar() {
+            const dateVal = document.getElementById('datePicker').value;
+            const timeVal = document.getElementById('timePicker').value;
+            const btn = document.getElementById('btnConfirmDate');
+            if (dateVal && timeVal) {
+                btn.disabled = false;
+                updateProgress(90);
+                document.getElementById('progressText').textContent = 'Почти готово! Жми на кнопку 💫';
+            } else if (dateVal || timeVal) {
+                updateProgress(75);
+                document.getElementById('progressText').textContent = 'Выбери и дату, и время 😊';
+            }
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        // ===== ПЕРЕХВАТ ОТПРАВКИ ФОРМЫ (чтобы показать салют и не уходить со страницы) =====
+        document.getElementById('finalForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Не даем форме уйти на Formspree стандартным способом
+
+            const form = this;
+            const formData = new FormData(form);
+
+            // Отправляем через fetch (AJAX)
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    showScreen('screen-final');
+                    updateProgress(100);
+                    setTimeout(() => launchFireworks(), 500);
+                } else {
+                    alert('Ой, что-то пошло не так. Попробуй ещё раз! 🥺');
+                }
+            }).catch(error => {
+                // Даже если ошибка — показываем салют (на случай блокировки fetch)
+                console.warn('Formspree может быть заблокирован корпоративной сетью. Но салют всё равно будет!');
+                showScreen('screen-final');
+                updateProgress(100);
+                setTimeout(() => launchFireworks(), 500);
+            });
+        });
+
+        // ===== САЛЮТ =====
+        function launchFireworks() {
+            const canvas = document.getElementById('fireworkCanvas');
+            canvas.style.display = 'block';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const ctx = canvas.getContext('2d');
+            const colors = ['#ff9a9e','#fad0c4','#ffb7b2','#ffdac1','#e2f0cb','#b5ead7','#c7ceea','#ffd1dc','#ffe0f0','#ffc3a0','#ff677d','#d4a5a5','#ffdfd3','#fec8d8','#957dad'];
+            const particles = [];
+            const sparkEmojis = ['✨','💖','🐱','🎉','💫','⭐','🌸','💝'];
+
+            function createFirework(x, y) {
+                const count = 40 + Math.floor(Math.random() * 40);
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
+                    const velocity = 3 + Math.random() * 8;
+                    particles.push({
+                        x, y,
+                        vx: Math.cos(angle) * velocity,
+                        vy: Math.sin(angle) * velocity,
+                        life: 1,
+                        decay: 0.008 + Math.random() * 0.02,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        size: 2 + Math.random() * 5,
+                    });
+                }
+                for (let i = 0; i < 6; i++) {
+                    const sparkEl = document.createElement('span');
+                    sparkEl.textContent = sparkEmojis[Math.floor(Math.random() * sparkEmojis.length)];
+                    sparkEl.style.cssText = `position:fixed; left:${x}px; top:${y}px; font-size:${18+Math.random()*30}px; pointer-events:none; z-index:10000; animation:sparkleFloat ${1+Math.random()*1.5}s ease-out forwards;`;
+                    document.body.appendChild(sparkEl);
+                    setTimeout(() => sparkEl.remove(), 2500);
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx; p.y += p.vy;
+                    p.vy += 0.05;
+                    p.life -= p.decay;
+                    if (p.life <= 0) { particles.splice(i, 1); continue; }
+                    alive = true;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.life;
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                }
+                if (alive || particles.length > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    canvas.style.display = 'none';
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            const launchPoints = [
+                { x: canvas.width * 0.2, y: canvas.height * 0.6 },
+                { x: canvas.width * 0.5, y: canvas.height * 0.3 },
+                { x: canvas.width * 0.8, y: canvas.height * 0.5 },
+                { x: canvas.width * 0.35, y: canvas.height * 0.25 },
+                { x: canvas.width * 0.65, y: canvas.height * 0.55 },
+            ];
+            launchPoints.forEach((pt, i) => setTimeout(() => createFirework(pt.x, pt.y), i * 250));
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * canvas.width * 0.8 + canvas.width * 0.1,
+                        Math.random() * canvas.height * 0.6 + canvas.height * 0.1
+                    );
+                }, 1200 + i * 400);
+            }
+            animate();
+        }
+
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('fireworkCanvas');
+            if (canvas.style.display === 'block') {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+    </script>
+</body>
+</html>
