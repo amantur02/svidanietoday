@@ -1,481 +1,485 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Одно важное приглашение 🐱</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Приглашение</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== ОБЩИЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #ffe0f0 0%, #fff5e6 50%, #e0f0ff 100%);
+            font-family: 'Georgia', 'Times New Roman', serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
+            padding: 24px;
+            background: #f5f0eb;
+            background-image: radial-gradient(circle at 20% 30%, #faf6f2 0%, #ede7e1 100%);
         }
 
-        .container {
-            max-width: 600px;
+        .card {
+            max-width: 640px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5);
-            text-align: center;
-            transition: all 0.4s ease;
-            position: relative;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 48px 44px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            transition: 0.3s;
         }
 
-        .screen { display: none; animation: fadeSlideIn 0.6s ease; }
-        .screen.active { display: block; }
-
-        @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-            0%,100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        @keyframes wiggle {
-            0%,100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-        }
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.08); }
-            70% { transform: scale(0.95); }
-            100% { transform: scale(1); opacity: 1; }
+        /* ===== ВЕРХНЯЯ ЧАСТЬ ===== */
+        .header-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            color: #8a7a6e;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eae3dc;
+            padding-bottom: 16px;
         }
 
-        h1 { font-size: 2em; color: #4a3f6b; margin-bottom: 15px; line-height: 1.3; }
-        h2 { font-size: 1.5em; color: #5e548e; margin-bottom: 25px; font-weight: 500; }
-        p { color: #6b5b7b; font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; }
+        .header-line span:first-child {
+            font-weight: 400;
+        }
 
-        .emoji-big { font-size: 80px; display: block; animation: float 3s ease-in-out infinite; margin-bottom: 20px; }
-        .emoji-medium { font-size: 50px; }
+        .header-line span:last-child {
+            font-weight: 300;
+            color: #b5a69a;
+        }
+
+        /* ===== ОСНОВНОЙ ТЕКСТ ===== */
+        .greeting {
+            font-size: 20px;
+            font-weight: 400;
+            color: #3d322c;
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        .greeting-name {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c241f;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .question-text {
+            font-size: 22px;
+            font-weight: 400;
+            color: #3d322c;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            padding-right: 20px;
+        }
+
+        .question-text .highlight {
+            color: #a67c6b;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .sub-question {
+            font-size: 16px;
+            color: #7f6e61;
+            margin-bottom: 32px;
+            font-weight: 300;
+            border-left: 2px solid #d6c9bf;
+            padding-left: 20px;
+            font-style: italic;
+        }
+
+        /* ===== КНОПКИ ===== */
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
 
         .btn {
-            display: inline-block;
-            padding: 16px 35px;
-            border-radius: 50px;
-            font-size: 1.2em;
-            font-weight: 600;
-            border: none;
+            padding: 14px 36px;
+            border: 1px solid #d6c9bf;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 400;
+            font-family: 'Georgia', serif;
             cursor: pointer;
-            margin: 10px;
-            transition: all 0.2s ease;
-            font-family: inherit;
+            transition: 0.25s;
+            background: transparent;
+            color: #3d322c;
+            letter-spacing: 0.02em;
         }
-        .btn-yes {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            color: #4a2c2c;
-            box-shadow: 0 8px 25px rgba(255,154,158,0.4);
-        }
-        .btn-yes:hover { transform: translateY(-3px) scale(1.03); }
-        .btn-yes:active { transform: scale(0.96); }
 
-        .btn-no {
-            background: #f0e6ef;
-            color: #8b7b9b;
-            transition: all 0.08s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            user-select: none;
+        .btn-primary {
+            background: #2c241f;
+            border-color: #2c241f;
+            color: #fff;
         }
-        .btn-no.running { position: fixed; z-index: 9999; pointer-events: none; animation: wiggle 0.3s ease infinite; }
 
-        .btn-next {
-            background: #d4c5e2;
-            color: #3d2c5e;
-            padding: 14px 30px;
-            font-size: 1.1em;
+        .btn-primary:hover {
+            background: #4a3a32;
+            border-color: #4a3a32;
         }
-        .btn-next:hover { background: #c3b0d6; transform: translateY(-2px); }
-        .btn-next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .quiz-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 25px;
+        .btn-secondary {
+            border-color: #d6c9bf;
+            color: #7f6e61;
         }
-        .quiz-option {
-            background: white;
-            border: 2px solid #e8dff0;
-            border-radius: 20px;
-            padding: 15px 22px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1em;
-            color: #4a3f6b;
+
+        .btn-secondary:hover {
+            background: #f5f0eb;
+            border-color: #b5a69a;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== ФОРМА ===== */
+        .form-wrapper {
+            margin-top: 36px;
+            padding-top: 32px;
+            border-top: 1px solid #eae3dc;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-wrapper.visible {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
             font-weight: 500;
-            flex: 1 1 150px;
-            max-width: 220px;
-            font-family: inherit;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            color: #3d322c;
+            margin-bottom: 4px;
+            letter-spacing: 0.02em;
         }
-        .quiz-option:hover { border-color: #c3b0d6; background: #fdfaff; transform: translateY(-2px); }
-        .quiz-option.selected { border-color: #ff9a9e; background: #fff0f0; box-shadow: 0 0 0 4px rgba(255,154,158,0.2); font-weight: 600; }
 
-        input[type="date"], input[type="time"] {
-            padding: 14px 20px;
-            border-radius: 20px;
-            border: 2px solid #e8dff0;
-            font-size: 1.1em;
-            margin: 10px;
-            font-family: inherit;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #4a3f6b;
+        .form-label .note {
+            font-weight: 300;
+            color: #a09084;
+            font-size: 13px;
         }
-        input[type="date"]:focus, input[type="time"]:focus {
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e0d6ce;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Georgia', serif;
+            background: #faf8f6;
+            transition: 0.2s;
             outline: none;
-            border-color: #ff9a9e;
-            box-shadow: 0 0 0 4px rgba(255,154,158,0.15);
+            color: #2c241f;
         }
 
-        .firework { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-
-        @keyframes sparkleFloat {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-80px) scale(0.3); }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #a67c6b;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(166, 124, 107, 0.1);
         }
 
-        .progress-bar { background: #e8dff0; border-radius: 20px; height: 10px; width: 100%; margin: 20px 0; overflow: hidden; }
-        .progress-fill { background: linear-gradient(90deg, #ff9a9e, #fad0c4); height: 100%; border-radius: 20px; transition: width 0.5s ease; }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
 
-        @media (max-width: 500px) {
-            .container { padding: 25px 18px; border-radius: 24px; }
-            h1 { font-size: 1.5em; }
-            .btn { padding: 14px 25px; font-size: 1em; }
-            .emoji-big { font-size: 60px; }
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7a6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 44px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: #2c241f;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            font-size: 17px;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            transition: 0.25s;
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+        }
+
+        .btn-submit:hover {
+            background: #4a3a32;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== СООБЩЕНИЯ ===== */
+        .fs-message {
+            margin-top: 16px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            display: none;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .fs-message.success {
+            display: block;
+            background: #f0ebe6;
+            color: #3d322c;
+            border: 1px solid #d6c9bf;
+        }
+
+        .fs-message.error {
+            display: block;
+            background: #f7f0ed;
+            color: #8a5a4a;
+            border: 1px solid #e4d3cb;
+        }
+
+        /* ===== ОТВЕТ НА "НЕТ" ===== */
+        .no-reply {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #5f4e41;
+            background: #f7f2ed;
+            border: 1px solid #e0d6ce;
+            text-align: center;
+            display: none;
+            font-style: italic;
+        }
+
+        .no-reply.visible {
+            display: block;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 540px) {
+            .card { padding: 32px 24px; }
+            .greeting-name { font-size: 24px; }
+            .question-text { font-size: 19px; }
+            .btn { padding: 12px 28px; font-size: 15px; }
         }
     </style>
 </head>
 <body>
-    <div class="container" id="appContainer">
 
-        <!-- ЭКРАН 1: ПРИГЛАШЕНИЕ -->
-        <div class="screen active" id="screen-invite">
-            <span class="emoji-big">🐱💌</span>
-            <h1>Привет!</h1>
-            <p>Я тут подумал... Мы оба знаем, что мир — странное место.<br>Но, может, сделаем его чуточку уютнее вместе?</p>
-            <p style="font-size: 1.4em; font-weight: 600; color: #5e548e;">Пойдём куда-нибудь? ✨</p>
-            <div style="margin-top: 25px; position: relative;">
-                <button class="btn btn-yes" onclick="goToQuiz()">🥰 С удовольствием!</button>
-                <button class="btn btn-no" id="btnRunaway" onmouseenter="runAway(this)" ontouchstart="runAway(this)">🙈 В другой раз...</button>
-            </div>
-            <p id="runawayHint" style="font-size: 0.85em; color: #b5a3c9; margin-top: 15px; min-height: 20px;"></p>
-        </div>
+<div class="card">
 
-        <!-- ЭКРАН 2: КУДА ПОЙТИ -->
-        <div class="screen" id="screen-quiz-where">
-            <span class="emoji-medium">🗺️</span>
-            <h2>Куда отправимся?</h2>
-            <p>Выбери, что тебе ближе по душе:</p>
-            <div class="quiz-options" id="quizWhereOptions">
-                <button class="quiz-option" onclick="selectOption(this, 'quizWhereOptions')">🌳 Прогуляться по парку</button>
-                <button class="quiz-option" onclick="selectOption(this, 'quizWhereOptions')">🏙️ Прогуляться по городу</button>
-                <button class="quiz-option" onclick="selectOption(this, 'quizWhereOptions')">🍝 Сходить в ресторан</button>
-            </div>
-            <button class="btn btn-next" id="btnNextWhere" onclick="goToQuizCuisine()" disabled>Дальше 👉</button>
-        </div>
-
-        <!-- ЭКРАН 3: КУХНЯ -->
-        <div class="screen" id="screen-quiz-cuisine">
-            <span class="emoji-medium">🍽️</span>
-            <h2>Какую кухню предпочитаешь?</h2>
-            <p>Можно выбрать всё, что нравится:</p>
-            <div class="quiz-options" id="quizCuisineOptions">
-                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🍕 Итальянская</button>
-                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🍣 Японская</button>
-                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🥟 Русская / Домашняя</button>
-                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🌮 Мексиканская</button>
-                <button class="quiz-option" onclick="selectOption(this, 'quizCuisineOptions')">🥗 Всё равно, главное компания 😊</button>
-            </div>
-            <button class="btn btn-next" id="btnNextCuisine" onclick="goToCalendar()" disabled>Дальше 👉</button>
-        </div>
-
-        <!-- ЭКРАН 4: КАЛЕНДАРЬ (ФОРМА ОТПРАВКИ) -->
-        <div class="screen" id="screen-calendar">
-            <span class="emoji-medium">📅</span>
-            <h2>Когда ты свободна?</h2>
-            <p>Выбери день и удобное время ✨</p>
-            <form id="finalForm" action="https://formspree.io/f/mlgyornw" method="POST">
-                <!-- Скрытые поля для предыдущих ответов -->
-                <input type="hidden" name="_subject" value="Новый ответ с приглашения! 💌">
-                <input type="hidden" name="where" id="hiddenWhere">
-                <input type="hidden" name="cuisine" id="hiddenCuisine">
-                <div style="margin: 15px 0;">
-                    <input type="date" name="date" id="datePicker" min="" required onchange="checkCalendar()">
-                </div>
-                <div>
-                    <input type="time" name="time" id="timePicker" value="18:00" required onchange="checkCalendar()">
-                </div>
-                <div style="margin-top: 20px;">
-                    <button type="submit" class="btn btn-yes" id="btnConfirmDate" disabled>
-                        Подтвердить и отправить 💫
-                    </button>
-                </div>
-                <div class="progress-bar" style="margin-top: 25px;">
-                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
-                </div>
-                <p style="font-size: 0.85em; color: #b5a3c9;" id="progressText">Осталось совсем чуть-чуть...</p>
-            </form>
-        </div>
-
-        <!-- ЭКРАН 5: ФИНАЛ С САЛЮТОМ -->
-        <div class="screen" id="screen-final">
-            <span class="emoji-big" style="animation: bounceIn 0.8s ease;">🎉</span>
-            <h1>Ура! Свершилось!</h1>
-            <p style="font-size: 1.2em;">Я безумно рад, что ты согласилась! 🥳<br>Обещаю — будет весело, вкусно и душевно.</p>
-            <p>Я свяжусь с тобой совсем скоро, чтобы уточнить детали.<br>А пока... лови салют! ✨💖🐱</p>
-            <button class="btn btn-yes" onclick="launchFireworks()" style="margin-top: 10px;">Запустить салют ещё раз 🎆</button>
-            <canvas id="fireworkCanvas" class="firework" style="display: none;"></canvas>
-        </div>
-
+    <!-- ===== ВЕРХНЯЯ ЛИНИЯ ===== -->
+    <div class="header-line">
+        <span>вечерний разговор</span>
+        <span>—</span>
     </div>
 
-    <script>
-        // ===== УБЕГАЮЩАЯ КНОПКА =====
-        let runawayClicks = 0;
-        const runawayHints = [
-            "Эй, ты куда? Кнопка здесь! 😼", "Почти поймал... почти... 🙀",
-            "Не-а, этот вариант не работает! 🐾", "Котик не одобряет отказы 😾",
-            "Сдавайся, это судьба! 💘", "Даже админка не спасёт тебя от меня 😹",
-            "Тыкни уже на розовую кнопку! 🎀", "Упс, опять убежала... 🏃‍♀️💨",
-            "Кнопка-ниндзя! 🥷🐱", "Ты очень настойчива... мне это нравится 😏",
-        ];
+    <!-- ===== ПРИВЕТСТВИЕ ===== -->
+    <div class="greeting">Привет,</div>
+    <div class="greeting-name">Ты</div>
 
-        function runAway(btn) {
-            runawayClicks++;
-            const hintEl = document.getElementById('runawayHint');
-            hintEl.textContent = runawayHints[Math.min(runawayClicks - 1, runawayHints.length - 1)];
+    <!-- ===== ВОПРОС (игривый, не прямой) ===== -->
+    <div class="question-text">
+        Есть один вечер, который я бы хотел провести не в одиночестве.
+        <span class="highlight">И мне кажется, ты знаешь, кто мог бы его составить.</span>
+    </div>
 
-            const btnRect = btn.getBoundingClientRect();
-            const maxX = window.innerWidth - btnRect.width - 20;
-            const maxY = window.innerHeight - btnRect.height - 20;
-            const minX = 20, minY = 20;
-            let newX, newY, attempts = 0;
-            do {
-                newX = Math.random() * (maxX - minX) + minX;
-                newY = Math.random() * (maxY - minY) + minY;
-                attempts++;
-                if (attempts > 50) break;
-            } while (Math.abs(newX - btnRect.left) < 150 && Math.abs(newY - btnRect.top) < 150);
+    <div class="sub-question">
+        Если твой ответ «да» — дальше будет пара вопросов, чтобы я не прогадал с выбором места.
+    </div>
 
-            btn.classList.add('running');
-            btn.style.position = 'fixed';
-            btn.style.left = newX + 'px';
-            btn.style.top = newY + 'px';
-            btn.style.zIndex = '9999';
-            setTimeout(() => btn.classList.remove('running'), 600);
+    <!-- ===== КНОПКИ ===== -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="yesBtn">Кажется, я знаю</button>
+        <button class="btn btn-secondary" id="noBtn">Я подумаю</button>
+    </div>
 
-            if (runawayClicks >= 8) {
-                hintEl.textContent = 'Ладно, ладно... розовая кнопка тебя ждёт 😸💖';
-                setTimeout(() => {
-                    btn.style.position = 'static';
-                    btn.style.left = 'auto'; btn.style.top = 'auto'; btn.style.zIndex = 'auto';
-                    btn.textContent = '😿 Ладно, уговорила...';
-                    btn.onmouseenter = null;
-                    btn.ontouchstart = null;
-                    btn.onclick = () => goToQuiz();
-                }, 2000);
-            }
-        }
+    <!-- ===== ОТВЕТ НА "НЕТ" ===== -->
+    <div class="no-reply" id="noReply">
+        Хорошо. Я подожду. Но если передумаешь — кнопка «Кажется, я знаю» всё ещё здесь.
+    </div>
 
-        // ===== НАВИГАЦИЯ =====
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const screen = document.getElementById(screenId);
-            screen.classList.add('active');
-            screen.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+    <!-- ===== ФОРМА ===== -->
+    <div class="form-wrapper" id="formWrapper">
 
-        function goToQuiz() {
-            document.getElementById('btnRunaway').style.display = 'none';
-            showScreen('screen-quiz-where');
-        }
+        <form id="surveyForm" action="https://formspree.io/f/mlgyornw" method="POST">
 
-        let selectedWhere = null;
-        let selectedCuisines = new Set();
+            <input type="hidden" name="_subject" value="Она согласилась на свидание" />
 
-        function selectOption(btn, parentId) {
-            const parent = document.getElementById(parentId);
-            if (parentId === 'quizWhereOptions') {
-                parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
-                btn.classList.add('selected');
-                selectedWhere = btn.textContent.trim();
-                document.getElementById('btnNextWhere').disabled = false;
-            } else if (parentId === 'quizCuisineOptions') {
-                btn.classList.toggle('selected');
-                if (btn.classList.contains('selected')) {
-                    selectedCuisines.add(btn.textContent.trim());
-                } else {
-                    selectedCuisines.delete(btn.textContent.trim());
-                }
-                document.getElementById('btnNextCuisine').disabled = selectedCuisines.size === 0;
-            }
-        }
+            <!-- Кухня -->
+            <div class="form-group">
+                <label class="form-label">Кухня, которая тебя радует <span class="note">(выбери одну)</span></label>
+                <select name="cuisine" required>
+                    <option value="">—</option>
+                    <option value="Итальянская">итальянская</option>
+                    <option value="Японская">японская</option>
+                    <option value="Грузинская">грузинская</option>
+                    <option value="Французская">французская</option>
+                    <option value="Паназиатская">паназиатская</option>
+                    <option value="Русская/европейская">русская или европейская</option>
+                    <option value="Удиви меня">пусть это будет сюрприз</option>
+                </select>
+            </div>
 
-        function goToQuizCuisine() {
-            if (!selectedWhere) return;
-            showScreen('screen-quiz-cuisine');
-        }
+            <!-- Места -->
+            <div class="form-group">
+                <label class="form-label">Места в городе, где тебе хорошо <span class="note">(что угодно)</span></label>
+                <input type="text" name="places" placeholder="парк, набережная, тихий дворик..." />
+            </div>
 
-        function goToCalendar() {
-            if (selectedCuisines.size === 0) return;
-            // Заполняем скрытые поля
-            document.getElementById('hiddenWhere').value = selectedWhere;
-            document.getElementById('hiddenCuisine').value = Array.from(selectedCuisines).join(', ');
-            showScreen('screen-calendar');
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('datePicker').min = tomorrow.toISOString().split('T')[0];
-            updateProgress(60);
-        }
+            <!-- Бюджет -->
+            <div class="form-group">
+                <label class="form-label">Ориентир по бюджету <span class="note">(чтобы я понимал масштаб)</span></label>
+                <select name="budget">
+                    <option value="не важно">не принципиально</option>
+                    <option value="до 2000 ₽">скромно и уютно</option>
+                    <option value="2000–4000 ₽">хороший ресторан</option>
+                    <option value="4000+ ₽">можно размахнуться</option>
+                </select>
+            </div>
 
-        function checkCalendar() {
-            const dateVal = document.getElementById('datePicker').value;
-            const timeVal = document.getElementById('timePicker').value;
-            const btn = document.getElementById('btnConfirmDate');
-            if (dateVal && timeVal) {
-                btn.disabled = false;
-                updateProgress(90);
-                document.getElementById('progressText').textContent = 'Почти готово! Жми на кнопку 💫';
-            } else if (dateVal || timeVal) {
-                updateProgress(75);
-                document.getElementById('progressText').textContent = 'Выбери и дату, и время 😊';
-            }
-        }
+            <!-- Детали -->
+            <div class="form-group">
+                <label class="form-label">Что ещё я должен знать <span class="note">(аллергии, время, напиток...)</span></label>
+                <textarea name="comment" rows="2" placeholder="например: не люблю шумные места, лучше в субботу..."></textarea>
+            </div>
 
-        function updateProgress(percent) {
-            document.getElementById('progressFill').style.width = percent + '%';
-        }
+            <!-- Email -->
+            <div class="form-group">
+                <label class="form-label">Email <span class="note">(чтобы я написал тебе с деталями)</span></label>
+                <input type="email" name="email" required placeholder="tanya@example.com" />
+            </div>
 
-        // ===== ПЕРЕХВАТ ОТПРАВКИ ФОРМЫ (чтобы показать салют и не уходить со страницы) =====
-        document.getElementById('finalForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Не даем форме уйти на Formspree стандартным способом
+            <button type="submit" class="btn-submit" id="submitBtn">Отправить</button>
 
-            const form = this;
-            const formData = new FormData(form);
+            <div id="formStatus" class="fs-message"></div>
+            <div id="formError" class="fs-message error"></div>
 
-            // Отправляем через fetch (AJAX)
-            fetch(form.action, {
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // ============================================================
+    // КНОПКИ
+    // ============================================================
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const noReply = document.getElementById('noReply');
+    const formWrapper = document.getElementById('formWrapper');
+
+    yesBtn.addEventListener('click', () => {
+        noReply.classList.remove('visible');
+        formWrapper.classList.add('visible');
+        setTimeout(() => {
+            formWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 200);
+    });
+
+    noBtn.addEventListener('click', () => {
+        noReply.classList.add('visible');
+        formWrapper.classList.remove('visible');
+        // Через 3 секунды мягко напоминаем
+        setTimeout(() => {
+            noReply.textContent = 'Я всё ещё здесь. И кнопка «Кажется, я знаю» никуда не делась.';
+        }, 3000);
+    });
+
+    // ============================================================
+    // ОТПРАВКА ФОРМЫ
+    // ============================================================
+    const form = document.getElementById('surveyForm');
+    const statusDiv = document.getElementById('formStatus');
+    const errorDiv = document.getElementById('formError');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        statusDiv.className = 'fs-message';
+        statusDiv.style.display = 'none';
+        errorDiv.className = 'fs-message error';
+        errorDiv.style.display = 'none';
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправляю...';
+
+        const data = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
                 method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    showScreen('screen-final');
-                    updateProgress(100);
-                    setTimeout(() => launchFireworks(), 500);
-                } else {
-                    alert('Ой, что-то пошло не так. Попробуй ещё раз! 🥺');
-                }
-            }).catch(error => {
-                // Даже если ошибка — показываем салют (на случай блокировки fetch)
-                console.warn('Formspree может быть заблокирован корпоративной сетью. Но салют всё равно будет!');
-                showScreen('screen-final');
-                updateProgress(100);
-                setTimeout(() => launchFireworks(), 500);
+                body: data,
+                headers: { 'Accept': 'application/json' },
             });
-        });
 
-        // ===== САЛЮТ =====
-        function launchFireworks() {
-            const canvas = document.getElementById('fireworkCanvas');
-            canvas.style.display = 'block';
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const ctx = canvas.getContext('2d');
-            const colors = ['#ff9a9e','#fad0c4','#ffb7b2','#ffdac1','#e2f0cb','#b5ead7','#c7ceea','#ffd1dc','#ffe0f0','#ffc3a0','#ff677d','#d4a5a5','#ffdfd3','#fec8d8','#957dad'];
-            const particles = [];
-            const sparkEmojis = ['✨','💖','🐱','🎉','💫','⭐','🌸','💝'];
+            if (response.ok) {
+                statusDiv.className = 'fs-message success';
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = 'Спасибо. Я всё получил. Напишу тебе на почту с деталями.';
+                form.reset();
 
-            function createFirework(x, y) {
-                const count = 40 + Math.floor(Math.random() * 40);
-                for (let i = 0; i < count; i++) {
-                    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
-                    const velocity = 3 + Math.random() * 8;
-                    particles.push({
-                        x, y,
-                        vx: Math.cos(angle) * velocity,
-                        vy: Math.sin(angle) * velocity,
-                        life: 1,
-                        decay: 0.008 + Math.random() * 0.02,
-                        color: colors[Math.floor(Math.random() * colors.length)],
-                        size: 2 + Math.random() * 5,
-                    });
-                }
-                for (let i = 0; i < 6; i++) {
-                    const sparkEl = document.createElement('span');
-                    sparkEl.textContent = sparkEmojis[Math.floor(Math.random() * sparkEmojis.length)];
-                    sparkEl.style.cssText = `position:fixed; left:${x}px; top:${y}px; font-size:${18+Math.random()*30}px; pointer-events:none; z-index:10000; animation:sparkleFloat ${1+Math.random()*1.5}s ease-out forwards;`;
-                    document.body.appendChild(sparkEl);
-                    setTimeout(() => sparkEl.remove(), 2500);
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let alive = false;
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    const p = particles[i];
-                    p.x += p.vx; p.y += p.vy;
-                    p.vy += 0.05;
-                    p.life -= p.decay;
-                    if (p.life <= 0) { particles.splice(i, 1); continue; }
-                    alive = true;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.globalAlpha = p.life;
-                    ctx.fill();
-                    ctx.globalAlpha = 1;
-                }
-                if (alive || particles.length > 0) {
-                    requestAnimationFrame(animate);
-                } else {
-                    canvas.style.display = 'none';
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            }
-
-            const launchPoints = [
-                { x: canvas.width * 0.2, y: canvas.height * 0.6 },
-                { x: canvas.width * 0.5, y: canvas.height * 0.3 },
-                { x: canvas.width * 0.8, y: canvas.height * 0.5 },
-                { x: canvas.width * 0.35, y: canvas.height * 0.25 },
-                { x: canvas.width * 0.65, y: canvas.height * 0.55 },
-            ];
-            launchPoints.forEach((pt, i) => setTimeout(() => createFirework(pt.x, pt.y), i * 250));
-            for (let i = 0; i < 3; i++) {
                 setTimeout(() => {
-                    createFirework(
-                        Math.random() * canvas.width * 0.8 + canvas.width * 0.1,
-                        Math.random() * canvas.height * 0.6 + canvas.height * 0.1
-                    );
-                }, 1200 + i * 400);
+                    formWrapper.style.display = 'none';
+                    const final = document.createElement('div');
+                    final.style.cssText = `
+                        margin-top: 28px;
+                        padding: 24px;
+                        text-align: center;
+                        font-size: 18px;
+                        color: #3d322c;
+                        border-top: 1px solid #eae3dc;
+                        padding-top: 28px;
+                        font-style: italic;
+                    `;
+                    final.innerHTML = 'Договорились. Жди письма.';
+                    formWrapper.parentNode.appendChild(final);
+                }, 2000);
+            } else {
+                const json = await response.json();
+                errorDiv.textContent = json.error || 'Что-то пошло не так. Попробуй ещё раз.';
+                errorDiv.style.display = 'block';
             }
-            animate();
+        } catch {
+            errorDiv.textContent = 'Ошибка соединения. Проверь интернет.';
+            errorDiv.style.display = 'block';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Отправить';
         }
+    });
+</script>
 
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('fireworkCanvas');
-            if (canvas.style.display === 'block') {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-        });
-    </script>
 </body>
 </html>
